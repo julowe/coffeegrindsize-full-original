@@ -10,6 +10,8 @@ Pre-built standalone executables are available for Windows, macOS, and Linux. No
 
 Visit the [Releases page](https://github.com/julowe/coffeegrindsize-full-original/releases) to download the latest version for your operating system.
 
+**Note:** If no releases are available yet, the repository owner can create one by pushing a git tag (e.g., `v1.0.0`) or by manually triggering the "Build and Release Executables" workflow from the Actions tab.
+
 ### Installation Instructions
 
 #### Windows

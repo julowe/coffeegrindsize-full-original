@@ -50,7 +50,7 @@ jobs:
     - name: Build executable (macOS)
       if: matrix.os == 'macos-latest'
       run: |
-        pyinstaller --name=coffeegrindsize --windowed --onefile coffeegrindsize.py
+        pyinstaller --name=coffeegrindsize --windowed --onedir coffeegrindsize.py
 
     - name: Package for Linux
       if: matrix.os == 'ubuntu-latest'
@@ -70,7 +70,7 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         cd dist
-        # Create a DMG or zip the .app bundle
+        # Create a zip of the .app bundle
         zip -r coffeegrindsize-macos.zip coffeegrindsize.app
         cd ..
 
