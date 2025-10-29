@@ -1,6 +1,6 @@
 # Coffee Grind Size Analyzer
 
-A GUI application for analyzing coffee grind size distribution from images, developed by Jonathan Gagne.
+A GUI application for analyzing coffee grind size distribution from images, developed by Jonathan Gagné.
 
 ## Download Standalone Executables
 
@@ -15,11 +15,13 @@ Visit the [Releases page](https://github.com/julowe/coffeegrindsize-full-origina
 ### Installation Instructions
 
 #### Windows
+
 1. Download `coffeegrindsize-windows.zip` from the latest release
 2. Extract the ZIP file to a folder of your choice
 3. Double-click `coffeegrindsize.exe` to run the application
 
 #### macOS
+
 1. Download `coffeegrindsize-macos.zip` from the latest release
 2. Extract the ZIP file
 3. Move `coffeegrindsize.app` to your Applications folder (optional)
@@ -29,6 +31,7 @@ Visit the [Releases page](https://github.com/julowe/coffeegrindsize-full-origina
 **Note for macOS users:** You may need to allow the app in System Preferences > Security & Privacy if you see a security warning.
 
 #### Linux
+
 1. Download `coffeegrindsize-linux.tar.gz` from the latest release
 2. Extract the archive: `tar -xzf coffeegrindsize-linux.tar.gz`
 3. Make the file executable: `chmod +x coffeegrindsize`
@@ -39,10 +42,12 @@ Visit the [Releases page](https://github.com/julowe/coffeegrindsize-full-origina
 If you prefer to run from source code:
 
 ### Prerequisites
+
 - Python 3.8 or higher
 - pip (Python package manager)
 
 ### Installation
+
 1. Clone this repository
 2. Install dependencies:
    ```bash
@@ -74,7 +79,7 @@ Thanks a lot Chris!
 
 ## Credits
 
-Application developed by **Jonathan Gagne**
+Application developed by **Jonathan Gagné**
 
 ## License
 
