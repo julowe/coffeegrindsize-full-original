@@ -15,7 +15,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest, macos-12]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
           - os: ubuntu-latest
             platform_name: Linux
@@ -29,12 +29,6 @@ jobs:
             platform_name: macOS
             artifact_name: coffeegrindsize-macos
             executable_ext: '.app'
-            macos_deployment_target: '13.0'  # Supports macOS 13 (Ventura) and later
-          - os: macos-12
-            platform_name: macOS-11
-            artifact_name: coffeegrindsize-macos-11
-            executable_ext: '.app'
-            macos_deployment_target: '11.0'  # Supports macOS 11 (Big Sur) and macOS 12 (Monterey)
 
     runs-on: ${{ matrix.os }}
     
@@ -54,14 +48,12 @@ jobs:
         pip install -r requirements.txt
 
     - name: Build executable (Windows/Linux)
-      if: matrix.os != 'macos-latest' && matrix.os != 'macos-12'
+      if: matrix.os != 'macos-latest'
       run: |
         pyinstaller --name=coffeegrindsize --windowed --onefile --icon=NONE coffeegrindsize.py
 
     - name: Build executable (macOS)
-      if: matrix.os == 'macos-latest' || matrix.os == 'macos-12'
-      env:
-        MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos_deployment_target }}
+      if: matrix.os == 'macos-latest'
       run: |
         pyinstaller --name=coffeegrindsize --windowed --onedir coffeegrindsize.py
 
@@ -80,33 +72,22 @@ jobs:
         cd ..
 
     - name: Package for macOS
-      if: matrix.os == 'macos-latest' || matrix.os == 'macos-12'
+      if: matrix.os == 'macos-latest'
       run: |
         cd dist
         # Create a zip of the .app bundle
-        zip -r ${{ matrix.artifact_name }}.zip coffeegrindsize.app
+        zip -r coffeegrindsize-macos.zip coffeegrindsize.app
         cd ..
 
-    - name: Upload artifact (Linux)
-      if: matrix.os == 'ubuntu-latest'
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.artifact_name }}
-        path: dist/coffeegrindsize-linux.tar.gz
-
-    - name: Upload artifact (Windows)
-      if: matrix.os == 'windows-latest'
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.artifact_name }}
-        path: dist/coffeegrindsize-windows.zip
-
-    - name: Upload artifact (macOS)
-      if: matrix.os == 'macos-latest' || matrix.os == 'macos-12'
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.artifact_name }}
-        path: dist/${{ matrix.artifact_name }}.zip
+        path: |
+          dist/coffeegrindsize-linux.tar.gz
+          dist/coffeegrindsize-windows.zip
+          dist/coffeegrindsize-macos.zip
+        if-no-files-found: ignore
 
   release:
     needs: build
@@ -131,7 +112,6 @@ jobs:
           artifacts/coffeegrindsize-linux/coffeegrindsize-linux.tar.gz
           artifacts/coffeegrindsize-windows/coffeegrindsize-windows.zip
           artifacts/coffeegrindsize-macos/coffeegrindsize-macos.zip
-          artifacts/coffeegrindsize-macos-11/coffeegrindsize-macos-11.zip
         draft: false
         prerelease: false
         generate_release_notes: true
