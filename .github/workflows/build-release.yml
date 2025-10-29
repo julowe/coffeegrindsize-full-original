@@ -15,7 +15,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest, macos-11]
+        os: [ubuntu-latest, windows-latest, macos-latest, macos-12]
         include:
           - os: ubuntu-latest
             platform_name: Linux
@@ -29,12 +29,12 @@ jobs:
             platform_name: macOS
             artifact_name: coffeegrindsize-macos
             executable_ext: '.app'
-            macos_deployment_target: '13.0'
-          - os: macos-11
+            macos_deployment_target: '13.0'  # Supports macOS 13 (Ventura) and later
+          - os: macos-12
             platform_name: macOS-11
             artifact_name: coffeegrindsize-macos-11
             executable_ext: '.app'
-            macos_deployment_target: '11.0'
+            macos_deployment_target: '11.0'  # Supports macOS 11 (Big Sur) and macOS 12 (Monterey)
 
     runs-on: ${{ matrix.os }}
     
@@ -54,12 +54,12 @@ jobs:
         pip install -r requirements.txt
 
     - name: Build executable (Windows/Linux)
-      if: matrix.os != 'macos-latest' && matrix.os != 'macos-11'
+      if: matrix.os != 'macos-latest' && matrix.os != 'macos-12'
       run: |
         pyinstaller --name=coffeegrindsize --windowed --onefile --icon=NONE coffeegrindsize.py
 
     - name: Build executable (macOS)
-      if: matrix.os == 'macos-latest' || matrix.os == 'macos-11'
+      if: matrix.os == 'macos-latest' || matrix.os == 'macos-12'
       env:
         MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos_deployment_target }}
       run: |
@@ -80,7 +80,7 @@ jobs:
         cd ..
 
     - name: Package for macOS
-      if: matrix.os == 'macos-latest' || matrix.os == 'macos-11'
+      if: matrix.os == 'macos-latest' || matrix.os == 'macos-12'
       run: |
         cd dist
         # Create a zip of the .app bundle
@@ -102,7 +102,7 @@ jobs:
         path: dist/coffeegrindsize-windows.zip
 
     - name: Upload artifact (macOS)
-      if: matrix.os == 'macos-latest' || matrix.os == 'macos-11'
+      if: matrix.os == 'macos-latest' || matrix.os == 'macos-12'
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.artifact_name }}
