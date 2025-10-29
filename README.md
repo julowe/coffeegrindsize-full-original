@@ -22,13 +22,16 @@ Visit the [Releases page](https://github.com/julowe/coffeegrindsize-full-origina
 
 #### macOS
 
-1. Download `coffeegrindsize-macos.zip` from the latest release
+1. Download `coffeegrindsize-macos.zip` (for macOS 13 or later) or `coffeegrindsize-macos-11.zip` (for macOS 11 Big Sur and macOS 12 Monterey) from the latest release
 2. Extract the ZIP file
 3. Move `coffeegrindsize.app` to your Applications folder (optional)
 4. Right-click (or Control-click) on `coffeegrindsize.app` and select "Open"
 5. Click "Open" in the security dialog that appears (first time only)
 
-**Note for macOS users:** You may need to allow the app in System Preferences > Security & Privacy if you see a security warning.
+**Note for macOS users:** 
+- If you have macOS 11 (Big Sur) or macOS 12 (Monterey), download the `coffeegrindsize-macos-11.zip` version
+- If you have macOS 13 (Ventura) or later, download the `coffeegrindsize-macos.zip` version
+- You may need to allow the app in System Preferences > Security & Privacy if you see a security warning.
 
 #### Linux
 

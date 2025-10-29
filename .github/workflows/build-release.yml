@@ -15,7 +15,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest, macos-11]
         include:
           - os: ubuntu-latest
             platform_name: Linux
@@ -28,6 +28,10 @@ jobs:
           - os: macos-latest
             platform_name: macOS
             artifact_name: coffeegrindsize-macos
+            executable_ext: '.app'
+          - os: macos-11
+            platform_name: macOS-11
+            artifact_name: coffeegrindsize-macos-11
             executable_ext: '.app'
 
     runs-on: ${{ matrix.os }}
@@ -48,12 +52,14 @@ jobs:
         pip install -r requirements.txt
 
     - name: Build executable (Windows/Linux)
-      if: matrix.os != 'macos-latest'
+      if: matrix.os != 'macos-latest' && matrix.os != 'macos-11'
       run: |
         pyinstaller --name=coffeegrindsize --windowed --onefile --icon=NONE coffeegrindsize.py
 
     - name: Build executable (macOS)
-      if: matrix.os == 'macos-latest'
+      if: matrix.os == 'macos-latest' || matrix.os == 'macos-11'
+      env:
+        MACOSX_DEPLOYMENT_TARGET: ${{ matrix.os == 'macos-11' && '11.0' || '13.0' }}
       run: |
         pyinstaller --name=coffeegrindsize --windowed --onedir coffeegrindsize.py
 
@@ -72,11 +78,11 @@ jobs:
         cd ..
 
     - name: Package for macOS
-      if: matrix.os == 'macos-latest'
+      if: matrix.os == 'macos-latest' || matrix.os == 'macos-11'
       run: |
         cd dist
         # Create a zip of the .app bundle
-        zip -r coffeegrindsize-macos.zip coffeegrindsize.app
+        zip -r ${{ matrix.artifact_name }}.zip coffeegrindsize.app
         cd ..
 
     - name: Upload artifact
@@ -87,6 +93,7 @@ jobs:
           dist/coffeegrindsize-linux.tar.gz
           dist/coffeegrindsize-windows.zip
           dist/coffeegrindsize-macos.zip
+          dist/coffeegrindsize-macos-11.zip
         if-no-files-found: ignore
 
   release:
@@ -112,6 +119,7 @@ jobs:
           artifacts/coffeegrindsize-linux/coffeegrindsize-linux.tar.gz
           artifacts/coffeegrindsize-windows/coffeegrindsize-windows.zip
           artifacts/coffeegrindsize-macos/coffeegrindsize-macos.zip
+          artifacts/coffeegrindsize-macos-11/coffeegrindsize-macos-11.zip
         draft: false
         prerelease: false
         generate_release_notes: true
